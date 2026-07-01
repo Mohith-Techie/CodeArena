@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String         @id @default(cuid())
+  username       String         @unique
+  email          String         @unique
+  passwordHash   String
+  rating         Int            @default(1500)
+  maxRating      Int            @default(1500)
+  rank           String         @default("Newbie")
+  avatar         String?        @default("")
+  country        String?        @default("")
+  bio            String?        @default("")
+  submissions    Submission[]
+  contestEntries ContestEntry[]
+  refreshTokens  RefreshToken[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Problem {
+  id               String           @id @default(cuid())
+  title            String
+  slug             String           @unique
+  difficulty       String           // Easy | Medium | Hard
+  rating           Int              @default(1200)
+  description      String
+  constraints      String
+  examples         Json             // [{input, output, explanation}]
+  tags             String[]
+  timeLimitMs      Int              @default(2000)
+  memoryLimitMb    Int              @default(256)
+  totalSubmissions Int              @default(0)
+  accepted         Int              @default(0)
+  acceptanceRate   Float            @default(0)
+  isVisible        Boolean          @default(true)
+  testCases        TestCase[]
+  submissions      Submission[]
+  contestProblems  ContestProblem[]
+  createdAt        DateTime         @default(now())
+}
+
+model TestCase {
+  id             String  @id @default(cuid())
+  problem        Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  problemId      String
+  input          String
+  expectedOutput String
+  isSample       Boolean @default(false)
+  orderIndex     Int     @default(0)
+}
+
+model Submission {
+  id           String   @id @default(cuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  problem      Problem  @relation(fields: [problemId], references: [id])
+  problemId    String
+  language     String
+  code         String
+  status       String   @default("PENDING")
+  runtimeMs    Int?
+  memoryKb     Int?
+  passedCases  Int?
+  totalCases   Int?
+  errorMessage String?
+  contestId    String?
+  createdAt    DateTime @default(now())
+}
+
+model Contest {
+  id          String           @id @default(cuid())
+  title       String
+  description String
+  startTime   DateTime
+  endTime     DateTime
+  isRated     Boolean          @default(true)
+  status      String           @default("UPCOMING")
+  isFrozen    Boolean          @default(false)
+  freezeTime  DateTime?
+  problems    ContestProblem[]
+  entries     ContestEntry[]
+  createdAt   DateTime         @default(now())
+}
+
+model ContestProblem {
+  contest   Contest @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  contestId String
+  problem   Problem @relation(fields: [problemId], references: [id])
+  problemId String
+  label     String  // A, B, C, D, E
+  points    Int     @default(100)
+
+  @@id([contestId, problemId])
+}
+
+model ContestEntry {
+  user         User    @relation(fields: [userId], references: [id])
+  userId       String
+  contest      Contest @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  contestId    String
+  score        Int     @default(0)
+  penalty      Int     @default(0)
+  ratingChange Int?
+  rank         Int?
+  solvedLabels String[] @default([])
+
+  @@id([userId, contestId])
+}
