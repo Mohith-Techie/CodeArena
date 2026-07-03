@@ -208,7 +208,7 @@ docker-compose down -v
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 ### Landing Page
 
