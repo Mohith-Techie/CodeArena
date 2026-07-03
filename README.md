@@ -208,6 +208,32 @@ docker-compose down -v
 
 ---
 
+## 📸 Screenshots
+
+### Landing Page
+
+![Landing Page](./screenshots/landing-page.png)
+
+---
+
+### Registration
+
+![Registration](./screenshots/signup.png)
+
+---
+
+### Problem Solving
+
+![Problem Page](./screenshots/problem-page.png)
+
+---
+
+### Contest Page
+
+![Contest Page](./screenshots/contest.png)
+
+---
+
 ## License
 
 MIT License
