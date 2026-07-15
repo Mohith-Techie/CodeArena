@@ -71,8 +71,8 @@ function ProblemPill({ label, problem, selected, solved, onClick }) {
     <button
       onClick={onClick}
       style={{
-        background: selected ? 'rgba(124,58,237,0.15)' : solved ? 'rgba(16,185,129,0.08)' : 'var(--bg-card)',
-        border: `1px solid ${selected ? 'rgba(124,58,237,0.5)' : solved ? 'rgba(16,185,129,0.3)' : 'var(--border)'}`,
+        background: selected ? 'rgba(225,29,72,0.15)' : solved ? 'rgba(16,185,129,0.08)' : 'var(--bg-card)',
+        border: `1px solid ${selected ? 'rgba(225,29,72,0.5)' : solved ? 'rgba(16,185,129,0.3)' : 'var(--border)'}`,
         borderRadius: 'var(--radius-md)',
         padding: '10px 14px',
         width: '100%',
@@ -350,7 +350,7 @@ export default function ContestRoom() {
                     display: 'flex', alignItems: 'center', gap: 10,
                     padding: '10px 16px',
                     borderBottom: '1px solid rgba(255,255,255,0.03)',
-                    background: isMe ? 'rgba(124,58,237,0.08)' : undefined,
+                    background: isMe ? 'rgba(225,29,72,0.09)' : undefined,
                   }}
                 >
                   <span style={{ width: 24, fontSize: 13, fontWeight: 700, color: idx < 3 ? '#f59e0b' : 'var(--text-muted)', textAlign: 'center' }}>

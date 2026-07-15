@@ -7,6 +7,7 @@
 
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
+const { generatedProblems } = require('./generateProblems');
 
 const prisma = new PrismaClient();
 
@@ -995,9 +996,12 @@ async function main() {
   }
 
   // ── Seed Problems ────────────────────────────────────────────────────────────
-  console.log('\nCreating problems...');
+  // Hand-written showcase problems + a large auto-generated catalogue whose
+  // test cases are produced by real reference solvers (see generateProblems.js).
+  const allProblems = [...problems, ...generatedProblems];
+  console.log(`\nCreating problems (${allProblems.length} total)...`);
 
-  for (const problemData of problems) {
+  for (const problemData of allProblems) {
     const { testCases, ...problemFields } = problemData;
 
     // Check if already exists

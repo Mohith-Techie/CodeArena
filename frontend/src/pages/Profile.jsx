@@ -87,7 +87,7 @@ function Heatmap({ submissions }) {
     if (count === 0) return 'rgba(255,255,255,0.04)'
     const intensity = Math.min(count / maxCount, 1)
     const alpha = 0.2 + intensity * 0.8
-    return `rgba(124, 58, 237, ${alpha})`
+    return `rgba(225, 29, 72, ${alpha})`
   }
 
   return (

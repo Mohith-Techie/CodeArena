@@ -8,7 +8,7 @@ import { Search, CheckCircle, ChevronLeft, ChevronRight, Filter } from 'lucide-r
 function DiffBadge({ difficulty }) {
   const map = { EASY: 'badge-easy', MEDIUM: 'badge-medium', HARD: 'badge-hard' }
   return (
-    <span className={`badge ${map[difficulty] || 'badge-pending'}`}>
+    <span className={`badge ${map[difficulty?.toUpperCase()] || 'badge-pending'}`}>
       {difficulty ? difficulty.charAt(0) + difficulty.slice(1).toLowerCase() : '—'}
     </span>
   )
@@ -49,17 +49,18 @@ export default function Problems() {
     try {
       const params = { page, limit: PAGE_SIZE }
       if (search.trim()) params.search = search.trim()
-      if (difficulty !== 'ALL') params.difficulty = difficulty
+      // API expects capitalized difficulty (Easy/Medium/Hard), not the uppercase UI value.
+      if (difficulty !== 'ALL') params.difficulty = difficulty.charAt(0) + difficulty.slice(1).toLowerCase()
 
       const data = await getProblems(params)
       setProblems(data.problems ?? data ?? [])
-      setTotal(data.total ?? (data.problems ?? data ?? []).length)
+      setTotal(data.pagination?.total ?? data.total ?? (data.problems ?? data ?? []).length)
     } catch (err) {
       setError('Failed to load problems. Please try again.')
     } finally {
       setLoading(false)
     }
-  }, [page, difficulty]) // Note: search is debounced separately
+  }, [page, difficulty, search])
 
   // Debounce search
   useEffect(() => {
@@ -113,9 +114,9 @@ export default function Problems() {
                   padding: '8px 14px',
                   fontSize: 13,
                   ...(difficulty === d ? {
-                    background: 'rgba(124,58,237,0.15)',
-                    borderColor: 'rgba(124,58,237,0.4)',
-                    color: 'var(--accent-light)',
+                    background: 'rgba(22,101,52,0.15)',
+                    borderColor: 'rgba(22,101,52,0.45)',
+                    color: 'var(--brand-green)',
                   } : {}),
                 }}
               >
@@ -249,9 +250,9 @@ export default function Problems() {
                   style={{
                     padding: '8px 14px', minWidth: 40,
                     ...(page === p ? {
-                      background: 'rgba(124,58,237,0.15)',
-                      borderColor: 'rgba(124,58,237,0.4)',
-                      color: 'var(--accent-light)',
+                      background: 'rgba(22,101,52,0.15)',
+                      borderColor: 'rgba(22,101,52,0.45)',
+                      color: 'var(--brand-green)',
                     } : {}),
                   }}
                   onClick={() => setPage(p)}

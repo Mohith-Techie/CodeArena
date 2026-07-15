@@ -1,33 +1,41 @@
 :root {
-  /* Colors */
-  --bg-primary: #070711;
-  --bg-secondary: #0f0f1a;
-  --bg-card: #12121f;
-  --bg-card-hover: #1a1a2e;
-  --bg-glass: rgba(255, 255, 255, 0.03);
-  --bg-glass-hover: rgba(255, 255, 255, 0.06);
-  --border: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(124, 58, 237, 0.4);
+  /* CodeArena theme — silver background · dark-green brand */
+  /* ── Base — silver / light ── */
+  --bg-primary: #c2c6ce;      /* silver page background */
+  --bg-secondary: #d0d3da;    /* lighter silver */
+  --bg-tertiary: #dcdee4;
+  --bg-card: #eef0f3;         /* near-white cards */
+  --bg-card-hover: #f7f8fa;
+  --bg-glass: rgba(255, 255, 255, 0.55);
+  --bg-glass-hover: rgba(255, 255, 255, 0.8);
+  --border: rgba(30, 41, 59, 0.16);
+  --border-hover: rgba(22, 101, 52, 0.55);
 
-  --accent: #7c3aed;         /* Electric violet */
-  --accent-light: #8b5cf6;
-  --accent-glow: rgba(124, 58, 237, 0.3);
-  --accent-success: #10b981; /* Emerald */
-  --accent-danger: #ef4444;  /* Red */
-  --accent-warning: #f59e0b; /* Amber */
-  --accent-info: #3b82f6;    /* Blue */
-  --accent-cyan: #06b6d4;
+  /* ── Brand — dark green + crimson/navy accents ── */
+  --brand-green: #166534;      /* dark green (title) */
+  --brand-green-light: #15803d;
+  --accent: #e11d48;         /* Crimson red */
+  --accent-light: #be123c;   /* darker crimson (readable on light) */
+  --accent-dark: #9f1239;    /* Deep crimson */
+  --accent-glow: rgba(22, 101, 52, 0.3);
+  --navy: #1e3a8a;           /* Navy blue */
+  --navy-light: #2563eb;
+  --accent-cyan: #0e7490;    /* deep cyan/teal (readable on light) */
+  --accent-success: #15803d; /* Green */
+  --accent-danger: #dc2626;  /* Red */
+  --accent-warning: #b45309; /* Amber */
+  --accent-info: #2563eb;    /* Blue */
 
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
+  --text-primary: #1b2029;   /* near-black text on silver */
+  --text-secondary: #48505f;
+  --text-muted: #737b8a;
 
   /* Rank colors */
   --rank-newbie: #94a3b8;
   --rank-pupil: #10b981;
   --rank-specialist: #06b6d4;
   --rank-expert: #3b82f6;
-  --rank-candidate-master: #8b5cf6;
+  --rank-candidate-master: #a855f7;
   --rank-master: #f97316;
   --rank-grandmaster: #ef4444;
 
@@ -42,8 +50,8 @@
   --radius-xl: 24px;
 
   /* Shadows */
-  --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.15);
-  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-glow: 0 0 24px rgba(22, 101, 52, 0.2);
+  --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.14);
 }
 
 * {
@@ -52,41 +60,90 @@
   box-sizing: border-box;
 }
 
-html { font-size: 16px; scroll-behavior: smooth; }
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background: var(--bg-primary);
+}
 
 body {
   font-family: var(--font-sans);
-  background: var(--bg-primary);
+  background: transparent;
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* ── Subtle silver sheen (fixed, behind everything) ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 46% at 18% 20%, rgba(22, 101, 52, 0.10) 0%, transparent 62%),
+    radial-gradient(42% 46% at 84% 28%, rgba(255, 255, 255, 0.55) 0%, transparent 60%),
+    radial-gradient(46% 50% at 72% 84%, rgba(30, 58, 138, 0.06) 0%, transparent 62%);
+  filter: blur(30px);
+  will-change: transform;
+  animation: smokeDrift 28s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+}
+
+/* ── Faint grid overlay (fixed, fades toward edges) ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(30, 41, 59, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 41, 59, 0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 85%);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 85%);
+  opacity: 0.5;
+}
+
+@keyframes smokeDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1);      }
+  50%  { transform: translate3d(3%, -2%, 0) scale(1.08); }
+  100% { transform: translate3d(-3%, 2%, 0) scale(1.04); }
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.4); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+::-webkit-scrollbar-thumb { background: rgba(30, 41, 59, 0.35); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
 
 /* Animated gradient background for special sections */
 .gradient-bg {
-  background: radial-gradient(ellipse at top left, rgba(124,58,237,0.15) 0%, transparent 50%),
-              radial-gradient(ellipse at bottom right, rgba(16,185,129,0.08) 0%, transparent 50%),
-              var(--bg-primary);
+  background:
+    radial-gradient(ellipse at top left, rgba(22, 101, 52, 0.14) 0%, transparent 52%),
+    radial-gradient(ellipse at bottom right, rgba(30, 58, 138, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, transparent 70%),
+    transparent;
 }
 
 /* Glass card */
 .glass-card {
-  background: var(--bg-glass);
+  background: rgba(255, 255, 255, 0.62);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(12px);
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s, transform 0.2s;
 }
 .glass-card:hover {
   border-color: var(--border-hover);
   box-shadow: var(--shadow-glow);
-  background: var(--bg-glass-hover);
+  background: rgba(255, 255, 255, 0.85);
 }
 
 /* Buttons */
@@ -106,13 +163,13 @@ body {
   white-space: nowrap;
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  background: linear-gradient(135deg, var(--brand-green), var(--brand-green-light));
   color: white;
-  box-shadow: 0 4px 12px rgba(124,58,237,0.3);
+  box-shadow: 0 4px 14px rgba(22, 101, 52, 0.35);
 }
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(124,58,237,0.4);
+  box-shadow: 0 6px 24px rgba(22, 101, 52, 0.45);
 }
 .btn-success {
   background: linear-gradient(135deg, #059669, #10b981);
@@ -176,7 +233,7 @@ body {
 }
 .input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15);
 }
 .input::placeholder { color: var(--text-muted); }
 
@@ -249,8 +306,8 @@ select.input {
   50% { transform: translateY(-8px); }
 }
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(124,58,237,0.2); }
-  50% { box-shadow: 0 0 40px rgba(124,58,237,0.5); }
+  0%, 100% { box-shadow: 0 0 20px rgba(225, 29, 72, 0.25); }
+  50% { box-shadow: 0 0 44px rgba(34, 211, 238, 0.45); }
 }
 .animate-fade-in { animation: fadeIn 0.3s ease forwards; }
 .loading-spinner {
@@ -299,7 +356,7 @@ pre {
 
 /* Hero gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #fff 0%, var(--accent-light) 50%, var(--accent-cyan) 100%);
+  background: linear-gradient(135deg, var(--brand-green) 0%, var(--brand-green-light) 50%, #0e7490 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -307,11 +364,17 @@ pre {
 
 /* Stat card */
 .stat-card {
-  background: var(--bg-card);
+  background: rgba(255, 255, 255, 0.62);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 24px;
   text-align: center;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-glow);
 }
 .stat-card .stat-value {
   font-size: 32px;
@@ -349,7 +412,7 @@ pre {
 .tab-btn:hover { color: var(--text-primary); }
 .tab-btn.active {
   color: var(--accent-light);
-  border-bottom-color: var(--accent-light);
+  border-bottom-color: var(--accent);
 }
 
 /* Dropdown */

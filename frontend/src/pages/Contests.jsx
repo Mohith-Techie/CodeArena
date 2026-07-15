@@ -64,8 +64,8 @@ function ContestCard({ contest, onRegister, registering }) {
       transition: 'border-color 0.2s, box-shadow 0.2s',
     }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(124,58,237,0.3)'
-        e.currentTarget.style.boxShadow = '0 4px 20px rgba(124,58,237,0.1)'
+        e.currentTarget.style.borderColor = 'rgba(225,29,72,0.35)'
+        e.currentTarget.style.boxShadow = '0 4px 20px rgba(225,29,72,0.12)'
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'

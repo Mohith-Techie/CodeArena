@@ -2,97 +2,66 @@
  * Language configuration for the CodeArena sandbox executor.
  *
  * Each entry defines:
- *  - image:            Docker image to pull/use for execution
- *  - extension:        Source file extension
- *  - filename:         Default filename written inside /code
- *  - buildAndRunCmd:   Function returning the Docker Cmd array
- *  - memoryLimitMb:    Default memory cap (can be overridden per-problem)
- *  - timeLimitMs:      Default time cap   (can be overridden per-problem)
+ *  - image:         Docker image used for execution
+ *  - filename:      Source file written inside the bind-mounted /code dir
+ *  - command:       Shell command (string) that compiles/runs the solution.
+ *                   Test-case input is fed by the runner via `< /code/input.txt`,
+ *                   so commands must NOT read from anywhere else.
+ *  - memoryLimitMb: Default memory cap (can be overridden per-problem)
+ *  - timeLimitMs:   Default time cap   (can be overridden per-problem)
+ *
+ * IMPORTANT (Docker Desktop / WSL2):
+ *  - The /code directory is a bind mount and is often mounted `noexec`, so
+ *    compiled binaries are written to /tmp (the container's own writable layer)
+ *    and executed from there — otherwise you get "./solution: Permission denied".
  */
 
 const LANGUAGES = {
   python: {
     image: 'python:3.12-slim',
-    extension: '.py',
     filename: 'solution.py',
-    /**
-     * Runs the Python script directly - no compilation step needed.
-     * @param {string} codeFile - Absolute path inside the container (/code/solution.py)
-     * @returns {string[]}
-     */
-    buildAndRunCmd: (codeFile) => ['python3', codeFile],
+    command: 'python3 /code/solution.py',
     memoryLimitMb: 256,
     timeLimitMs: 5000,
   },
 
   javascript: {
     image: 'node:20-slim',
-    extension: '.js',
     filename: 'solution.js',
-    /**
-     * Runs the JS file with Node - no compilation step needed.
-     * @param {string} codeFile
-     * @returns {string[]}
-     */
-    buildAndRunCmd: (codeFile) => ['node', codeFile],
+    command: 'node /code/solution.js',
     memoryLimitMb: 256,
     timeLimitMs: 5000,
   },
 
   java: {
-    image: 'eclipse-temurin:21-jdk-slim',
-    extension: '.java',
-    // IMPORTANT: Java requires the public class name to match the filename.
-    // The submitted solution must declare `public class Main`.
+    image: 'eclipse-temurin:21-jdk',
+    // Java requires the public class name to match the filename → `public class Main`.
     filename: 'Main.java',
-    /**
-     * Compiles then runs Main.java inside the container's /code directory.
-     * Uses sh -c so we can chain two commands with &&.
-     * @param {string} _codeFile - Unused; Java always targets Main.java
-     * @returns {string[]}
-     */
-    buildAndRunCmd: (_codeFile) => [
-      'sh',
-      '-c',
-      'cd /code && javac Main.java && java Main',
-    ],
+    // Compile classes into /tmp and run from there to avoid the noexec bind mount.
+    command: 'javac -d /tmp /code/Main.java && java -cp /tmp Main',
     memoryLimitMb: 256,
+    // The JVM + javac reserve well over the runtime limit; give the container room.
+    minMemoryMb: 768,
     timeLimitMs: 5000,
   },
 
   cpp: {
     image: 'gcc:14',
-    extension: '.cpp',
     filename: 'solution.cpp',
-    /**
-     * Compiles with g++ at -O2, then runs the resulting binary.
-     * @param {string} _codeFile
-     * @returns {string[]}
-     */
-    buildAndRunCmd: (_codeFile) => [
-      'sh',
-      '-c',
-      'cd /code && g++ -O2 -o solution solution.cpp && ./solution',
-    ],
+    command: 'g++ -O2 -o /tmp/solution /code/solution.cpp && /tmp/solution',
     memoryLimitMb: 256,
+    // Compiling <bits/stdc++.h> at -O2 needs ~300-400MB in cc1plus; without this
+    // floor the compiler gets OOM-killed and the submission is misreported as CE.
+    minMemoryMb: 512,
     timeLimitMs: 5000,
   },
 
   c: {
     image: 'gcc:14',
-    extension: '.c',
     filename: 'solution.c',
-    /**
-     * Compiles with gcc at -O2, then runs the resulting binary.
-     * @param {string} _codeFile
-     * @returns {string[]}
-     */
-    buildAndRunCmd: (_codeFile) => [
-      'sh',
-      '-c',
-      'cd /code && gcc -O2 -o solution solution.c && ./solution',
-    ],
+    command: 'gcc -O2 -o /tmp/solution /code/solution.c && /tmp/solution',
     memoryLimitMb: 256,
+    minMemoryMb: 512,
     timeLimitMs: 5000,
   },
 };

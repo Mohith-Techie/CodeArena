@@ -140,22 +140,34 @@ function initSocket(server) {
 
     try {
       const payload = JSON.parse(message);
+      // The worker publishes a FLAT payload:
+      //   { submissionId, userId, status, runtimeMs, passedCases, totalCases, errorMessage }
+      // (It also tolerates an older nested { result } shape for safety.)
       const { submissionId, userId, result } = payload;
+      const data = result || payload;
+      const status = data.status;
 
-      if (!submissionId || !result) {
+      if (!submissionId || !status) {
         console.warn('[Socket.IO] Received malformed message:', message);
         return;
       }
 
-      console.log(`[Socket.IO] Emitting result for submission ${submissionId} to user ${userId}`);
+      // Emit both `verdict` (what the frontend reads) and `status` for compatibility.
+      const out = {
+        submissionId,
+        verdict:      status,
+        status,
+        runtimeMs:    data.runtimeMs ?? null,
+        memoryKb:     data.memoryKb ?? null,
+        passedCases:  data.passedCases ?? 0,
+        totalCases:   data.totalCases ?? 0,
+        errorMessage: data.errorMessage ?? null,
+      };
 
-      // Emit to the user's personal room (if they are connected)
-      if (userId) {
-        io.to(`user:${userId}`).emit('submission-result', { submissionId, ...result });
-      }
+      console.log(`[Socket.IO] Emitting ${status} for submission ${submissionId} to user ${userId}`);
 
-      // Also emit to any client explicitly tracking this submission
-      io.to(`submission:${submissionId}`).emit('submission-result', { submissionId, ...result });
+      if (userId) io.to(`user:${userId}`).emit('submission-result', out);
+      io.to(`submission:${submissionId}`).emit('submission-result', out);
     } catch (parseErr) {
       console.error('[Socket.IO] Failed to parse message:', parseErr.message);
     }

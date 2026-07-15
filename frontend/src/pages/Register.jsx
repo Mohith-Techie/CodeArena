@@ -96,18 +96,16 @@ export default function Register() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'radial-gradient(ellipse at bottom right, rgba(16,185,129,0.08) 0%, transparent 50%), radial-gradient(ellipse at top left, rgba(124,58,237,0.12) 0%, transparent 50%), var(--bg-primary)',
+      background: 'radial-gradient(ellipse at bottom right, rgba(30,58,138,0.18) 0%, transparent 52%), radial-gradient(ellipse at top left, rgba(225,29,72,0.14) 0%, transparent 50%), var(--bg-primary)',
       padding: '80px 24px 24px',
     }}>
       <div style={{ width: '100%', maxWidth: 440 }}>
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <div style={{ fontSize: 32, marginBottom: 8 }}>⚔️</div>
             <div style={{
               fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px',
-              background: 'linear-gradient(135deg, #fff, var(--accent-light), var(--accent-cyan))',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+              color: 'var(--brand-green)',
             }}>
               CodeArena
             </div>

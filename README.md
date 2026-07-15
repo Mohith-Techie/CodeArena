@@ -12,17 +12,17 @@ A distributed competitive programming platform that combines LeetCode's coding e
 
 ## Features
 
-| Feature | Description |
-|---------|-------------|
-| JWT Authentication | Register, login, refresh tokens |
-| Problem Bank | 15 seeded problems (Easy–Expert, 800–2200 rating) |
-| Monaco Editor | VS Code-powered code editor |
-| Multi-language Support | Python, JavaScript, Java, C++, C |
-| Docker Sandbox | Secure isolated execution |
-| Real-time Results | Socket.IO + Redis Pub/Sub |
-| Elo Rating System | Codeforces-inspired rating algorithm |
-| Contests | ICPC-style contests with live standings |
-| User Profiles | Rating history, submissions, statistics |
+| Feature                | Description                                                                                               |
+| ---------------------- | --------------------------------------------------------------------------------------------------------- |
+| JWT Authentication     | Register, login, refresh tokens                                                                           |
+| Problem Bank           | 131 seeded problems (15 hand-written + 116 classic interview/CP problems with reference-solver test data) |
+| Monaco Editor          | VS Code-powered code editor                                                                               |
+| Multi-language Support | Python, JavaScript, Java, C++, C                                                                          |
+| Docker Sandbox         | Secure isolated execution                                                                                 |
+| Real-time Results      | Socket.IO + Redis Pub/Sub                                                                                 |
+| Elo Rating System      | Codeforces-inspired rating algorithm                                                                      |
+| Contests               | ICPC-style contests with live standings                                                                   |
+| User Profiles          | Rating history, submissions, statistics                                                                   |
 
 ---
 
@@ -135,46 +135,46 @@ Each submission executes inside an isolated Docker container with:
 
 ## Verdicts
 
-| Verdict | Description |
-|---------|-------------|
-| ACCEPTED | All test cases passed |
-| WRONG_ANSWER | Output mismatch |
-| TIME_LIMIT_EXCEEDED | Execution exceeded time limit |
-| MEMORY_LIMIT_EXCEEDED | Memory limit exceeded |
-| RUNTIME_ERROR | Program crashed |
-| COMPILATION_ERROR | Compilation failed |
+| Verdict               | Description                   |
+| --------------------- | ----------------------------- |
+| ACCEPTED              | All test cases passed         |
+| WRONG_ANSWER          | Output mismatch               |
+| TIME_LIMIT_EXCEEDED   | Execution exceeded time limit |
+| MEMORY_LIMIT_EXCEEDED | Memory limit exceeded         |
+| RUNTIME_ERROR         | Program crashed               |
+| COMPILATION_ERROR     | Compilation failed            |
 
 ---
 
 ## Rating System
 
-| Rating | Rank |
-|---------|------|
-| <1200 | Newbie |
-| 1200–1399 | Pupil |
-| 1400–1599 | Specialist |
-| 1600–1899 | Expert |
+| Rating    | Rank             |
+| --------- | ---------------- |
+| <1200     | Newbie           |
+| 1200–1399 | Pupil            |
+| 1400–1599 | Specialist       |
+| 1600–1899 | Expert           |
 | 1900–2099 | Candidate Master |
-| 2100–2299 | Master |
-| ≥2300 | Grandmaster |
+| 2100–2299 | Master           |
+| ≥2300     | Grandmaster      |
 
 ---
 
 ## API
 
-| Method | Endpoint |
-|---------|----------|
-| POST | `/api/auth/register` |
-| POST | `/api/auth/login` |
-| POST | `/api/auth/refresh` |
-| GET | `/api/problems` |
-| GET | `/api/problems/:slug` |
-| POST | `/api/submissions` |
-| GET | `/api/submissions/:id` |
-| GET | `/api/contests` |
-| POST | `/api/contests/:id/register` |
-| GET | `/api/contests/:id/standings` |
-| GET | `/api/leaderboard` |
+| Method | Endpoint                      |
+| ------ | ----------------------------- |
+| POST   | `/api/auth/register`          |
+| POST   | `/api/auth/login`             |
+| POST   | `/api/auth/refresh`           |
+| GET    | `/api/problems`               |
+| GET    | `/api/problems/:slug`         |
+| POST   | `/api/submissions`            |
+| GET    | `/api/submissions/:id`        |
+| GET    | `/api/contests`               |
+| POST   | `/api/contests/:id/register`  |
+| GET    | `/api/contests/:id/standings` |
+| GET    | `/api/leaderboard`            |
 
 ---
 
@@ -222,9 +222,15 @@ docker-compose down -v
 
 ---
 
-### Problem Solving
+### Problem List
 
-![Problem Page](./screenshots/problem-page.png)
+![Problem List](./screenshots/problem-list.png)
+
+---
+
+### Problem Solving (Interactive Code Editor)
+
+![Interactive Code Editor](./screenshots/interactive-code-editor.png)
 
 ---
 

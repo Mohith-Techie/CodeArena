@@ -151,7 +151,7 @@ export default function Leaderboard() {
                         <tr
                           key={u.id}
                           style={{
-                            background: isMe ? 'rgba(124,58,237,0.06)' : undefined,
+                            background: isMe ? 'rgba(225,29,72,0.08)' : undefined,
                           }}
                         >
                           <td style={{ textAlign: 'center' }}>

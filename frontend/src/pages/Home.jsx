@@ -130,30 +130,28 @@ export default function Home() {
       >
         {/* Decorative orbs */}
         <div style={{
-          position: 'absolute', top: '20%', left: '10%',
-          width: 400, height: 400,
-          background: 'radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%)',
+          position: 'absolute', top: '18%', left: '8%',
+          width: 460, height: 460,
+          background: 'radial-gradient(circle, rgba(22,101,52,0.14) 0%, transparent 70%)',
           borderRadius: '50%', pointerEvents: 'none',
+          filter: 'blur(20px)', animation: 'float 7s ease-in-out infinite',
         }} />
         <div style={{
-          position: 'absolute', bottom: '20%', right: '5%',
-          width: 300, height: 300,
-          background: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)',
+          position: 'absolute', bottom: '16%', right: '4%',
+          width: 380, height: 380,
+          background: 'radial-gradient(circle, rgba(255,255,255,0.55) 0%, transparent 70%)',
           borderRadius: '50%', pointerEvents: 'none',
+          filter: 'blur(20px)', animation: 'float 9s ease-in-out infinite reverse',
+        }} />
+        <div style={{
+          position: 'absolute', top: '55%', left: '42%',
+          width: 300, height: 300,
+          background: 'radial-gradient(circle, rgba(30,58,138,0.08) 0%, transparent 70%)',
+          borderRadius: '50%', pointerEvents: 'none',
+          filter: 'blur(24px)', animation: 'float 11s ease-in-out infinite',
         }} />
 
         <div className="container" style={{ position: 'relative', textAlign: 'center', padding: '80px 24px' }}>
-          {/* Tag line */}
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8,
-            background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.3)',
-            borderRadius: 99, padding: '6px 16px', marginBottom: 32,
-            fontSize: 13, color: 'var(--accent-light)', fontWeight: 500,
-          }}>
-            <Zap size={14} />
-            Next-generation competitive programming
-          </div>
-
           <h1 style={{
             fontSize: 'clamp(40px, 8vw, 80px)',
             fontWeight: 800,
@@ -185,38 +183,11 @@ export default function Home() {
               <Trophy size={16} /> View Contests
             </Link>
           </div>
-
-          {/* Floating code snippet */}
-          <div style={{
-            marginTop: 60,
-            display: 'inline-block',
-            textAlign: 'left',
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '20px 24px',
-            fontFamily: 'var(--font-mono)',
-            fontSize: 13,
-            lineHeight: 1.8,
-            maxWidth: 420,
-            boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
-            animation: 'float 4s ease-in-out infinite',
-          }}>
-            <div style={{ color: '#94a3b8', marginBottom: 4 }}>{'// Two Sum — O(n) solution'}</div>
-            <div><span style={{ color: '#8b5cf6' }}>def</span>{' '}<span style={{ color: '#06b6d4' }}>twoSum</span>(nums, target):</div>
-            <div style={{ paddingLeft: 20 }}>seen = {'{}'}</div>
-            <div style={{ paddingLeft: 20 }}><span style={{ color: '#8b5cf6' }}>for</span> i, n <span style={{ color: '#8b5cf6' }}>in</span> <span style={{ color: '#10b981' }}>enumerate</span>(nums):</div>
-            <div style={{ paddingLeft: 40 }}>comp = target - n</div>
-            <div style={{ paddingLeft: 40 }}><span style={{ color: '#8b5cf6' }}>if</span> comp <span style={{ color: '#8b5cf6' }}>in</span> seen:</div>
-            <div style={{ paddingLeft: 60 }}><span style={{ color: '#8b5cf6' }}>return</span> [seen[comp], i]</div>
-            <div style={{ paddingLeft: 40 }}>seen[n] = i</div>
-            <div style={{ marginTop: 8, color: '#10b981' }}>✓ Accepted — 42ms · 16.4MB</div>
-          </div>
         </div>
       </section>
 
       {/* ── Stats Bar ── */}
-      <section style={{ background: 'var(--bg-secondary)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '48px 0' }}>
+      <section style={{ background: 'rgba(255,255,255,0.45)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '48px 0' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 24 }}>
             {STATS.map((s) => (
@@ -260,7 +231,7 @@ export default function Home() {
       </section>
 
       {/* ── Recent Contests ── */}
-      <section style={{ padding: '0 0 96px', background: 'var(--bg-secondary)', paddingTop: 64 }}>
+      <section style={{ padding: '0 0 96px', background: 'rgba(255,255,255,0.35)', paddingTop: 64 }}>
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
             <h2 style={{ fontSize: 26, fontWeight: 700 }}>Recent Contests</h2>
@@ -302,7 +273,7 @@ export default function Home() {
               ? [1, 2, 3, 4, 5].map((i) => (
                   <div key={i} className="skeleton" style={{ height: 60, borderRadius: 'var(--radius-md)' }} />
                 ))
-              : topUsers.slice(0, 5).map((u, idx) => (
+              : (Array.isArray(topUsers) ? topUsers : []).map((u, idx) => (
                   <Link key={u.id} to={`/profile/${u.username}`} style={{ textDecoration: 'none' }}>
                     <div className="glass-card" style={{
                       padding: '14px 20px',
@@ -349,7 +320,7 @@ export default function Home() {
       {/* ── CTA Banner ── */}
       {!isAuthenticated && (
         <section style={{
-          background: 'linear-gradient(135deg, rgba(124,58,237,0.15), rgba(16,185,129,0.08))',
+          background: 'linear-gradient(135deg, rgba(22,101,52,0.16), rgba(30,58,138,0.12))',
           borderTop: '1px solid var(--border)',
           borderBottom: '1px solid var(--border)',
           padding: '64px 0',
@@ -378,7 +349,7 @@ export default function Home() {
         fontSize: 13,
       }}>
         <div className="container">
-          <span>⚔️ CodeArena © {new Date().getFullYear()} — Compete. Code. Conquer.</span>
+          <span>CodeArena © {new Date().getFullYear()} — Compete. Code. Conquer.</span>
         </div>
       </footer>
     </div>

@@ -66,7 +66,7 @@ export default function Navbar() {
 
   const rank = user ? getRank(user.rating) : null
   const rankColor = rank ? RANK_COLORS[rank] : undefined
-  const initials = user ? user.username.slice(0, 2).toUpperCase() : ''
+  const initials = user?.username ? user.username.slice(0, 2).toUpperCase() : 'U'
 
   return (
     <>
@@ -75,7 +75,6 @@ export default function Navbar() {
 
           {/* ── Logo ── */}
           <Link to="/" className="navbar-logo" onClick={() => setMobileOpen(false)}>
-            <span className="navbar-logo-icon">⚔️</span>
             <span className="navbar-logo-text">CodeArena</span>
           </Link>
 
